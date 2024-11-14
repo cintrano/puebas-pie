@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+ 
+<head>
+    <meta charset="utf-8" />
+    <title>
+        Change Image Dynamically
+        when User Scrolls
+    </title>
+</head>
+ 
+<body>
+<!--<h1>GeeksforGeeks</h1>-->
+<!--<b>A Computer Science Portal for Geeks</b>-->
+    <div id="scroll-image">
+        <!--<img src="CSS.png" class="test" />-->
+        <!--<img src="html.png" class="test" />-->
+        <!--<img src="php.png" class="test" />-->
+    </div>
+</body>
+ 
+ <style>
+    img {
+        position: absolute;
+        left: 300px;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+    addImage = function(name) {     
+        var img = document.createElement("img");
+        img.src = name;
+        img.classList.add("test");
+        var src = document.getElementById("scroll-image");
+        src.appendChild(img);
+    }
+
+    const imagenes = [
+            "3002.jpg","3004.jpg","3006.jpg","3008.jpg","3010.jpg","3012.jpg","3014.jpg","3016.jpg","3018.jpg","3020.jpg","3023.jpg","3025.jpg","3027.jpg","3029.jpg","3031.jpg","3033.jpg","3035.jpg","3037.jpg","3039.jpg","3041.jpg","3044.jpg","3046.jpg","3048.jpg","3050.jpg","3052.jpg","3054.jpg","3056.jpg","3058.jpg","3060.jpg","3062.jpg","3065.jpg","3067.jpg","3069.jpg","3071.jpg","3073.jpg","3075.jpg","3077.jpg","3079.jpg","3081.jpg","3083.jpg","3086.jpg","3088.jpg","3090.jpg","3092.jpg","3094.jpg","3096.jpg","3098.jpg","3100.jpg","3102.jpg","3104.jpg","3107.jpg","3109.jpg","3111.jpg","3113.jpg","3115.jpg","3117.jpg","3119.jpg","3121.jpg","3123.jpg","3125.jpg","3128.jpg","3130.jpg","3132.jpg","3134.jpg","3136.jpg","3138.jpg","3140.jpg","3142.jpg","3144.jpg","3146.jpg","3149.jpg","3151.jpg","3153.jpg","3155.jpg","3157.jpg","3159.jpg","3161.jpg","3163.jpg","3165.jpg","3167.jpg","3170.jpg","3172.jpg","3174.jpg","3176.jpg","3178.jpg","3180.jpg",
+                    ];
+
+    //var num_of_images = 199//704
+    imagenes.forEach(name => {
+        //var name = "CT"+("00" + ((+i+1))).slice(-3)+".jpg"; // Ascendente
+        //var name = "CT"+("00" + (num_of_images - i)).slice(-3)+".jpg"; // Decreciente
+        addImage("TC3/" + name);
+        console.log("TC3/" + name);
+    })
+
+    var src = document.getElementById("scroll-image");
+        src.firstElementChild.style.zIndex = "1";
+
+</script>
+
+
+<script type="text/javascript">
+    window.onload = function() {
+
+        // Index of current image
+        // which is on display
+        var imageIndex = 0;
+
+        // Object array of all the
+        // images of class test
+        var images =
+            document.getElementsByClassName('test');
+
+        // This tells us if mouse if over
+        // image or not, We only change
+        // image if mouse if over it
+        var isMouseOverImage = false;
+
+        // Object of parent element
+        // containing all images
+        var scrollImages =
+            document.getElementById('scroll-image');
+
+        // Stores the current scroll co-ordinates
+        // so that the window don't scroll down
+        // while scrolling the images
+        var x, y;
+
+        // This function sets the scroll to x, y
+        function noScroll() {
+            window.scrollTo(x, y);
+        }
+
+        // The following event id fired once when
+        // We hover mouse over the images
+        scrollImages.addEventListener(
+                "mouseenter", function() {
+
+            // We store the current page
+            // offset to x,y
+            x = window.pageXOffset;
+            y = window.pageYOffset;
+
+            // We add the following event to
+            // window object, so if we scroll
+            // down after mouse is over the
+            // image we can avoid scrolling
+            // the window
+            window.addEventListener("scroll", noScroll);
+            
+            // We set isMouseOverImage to
+            // true, this means Mouse is
+            // now over the image
+            isMouseOverImage = true;
+        });
+
+        // The following function is fired
+        // when mouse is no longer over
+        // the images
+        scrollImages.addEventListener(
+                "mouseleave", function() {
+
+            // We set isMouseOverImage to
+            // false, this means mouse is
+            // not over the image
+            isMouseOverImage = false;
+
+            // We remove the event we previously
+            // added because we are no longer
+            // over the image, the scroll will
+            // now scroll the window
+            window.removeEventListener(
+                        "scroll", noScroll);
+        });
+
+        // The following function is called
+        // when we move mouse wheel over
+        // the images
+        scrollImages.addEventListener(
+                    "wheel", function(e) {
+                            
+            circular = false;
+
+            // We check if we are over
+            // image or not
+            if (isMouseOverImage) {
+                var nextImageIndex;
+
+                // The following condition
+                // finds the next image
+                // index depending if we
+                // scroll up or scroll down
+                var currentImageIndex = imageIndex;
+                if (e.deltaY > 0) {
+                    nextImageIndex = (imageIndex + 1);
+                    if (!circular && nextImageIndex == images.length) {nextImageIndex = nextImageIndex -1}
+                    nextImageIndex = nextImageIndex % images.length;
+                }
+                else {
+                    nextImageIndex = (imageIndex - 1);// + images.length);
+                    if (!circular && nextImageIndex == -1) {nextImageIndex = nextImageIndex +1}
+                    nextImageIndex = nextImageIndex % images.length;
+                }
+
+                // We set the z index of current
+                // image to 0
+                images[imageIndex].style.zIndex = "0";
+                    
+                // We set the z index of next
+                // image to 1, this makes
+                // The new image appear on top
+                // of old image
+                images[nextImageIndex].style.zIndex = "1";
+                imageIndex = nextImageIndex;
+            }
+        });
+    }
+</script>
+
+</script>
+</html>   
